@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Questa</title>
+  <script>
+    (function(){
+      try {
+        var mode = localStorage.getItem('themeMode') || 'auto';
+        if (mode === 'light' || mode === 'dark') {
+          document.documentElement.setAttribute('data-theme', mode);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Theme overrides via data-theme attribute */
+    :root[data-theme='dark'] {
+      --bg: #0f1220;
+      --bg-2: #12162a;
+      --surface: rgba(255, 255, 255, 0.06);
+      --surface-strong: rgba(255, 255, 255, 0.1);
+      --text: #e7e9ee;
+      --muted: #a1a6b3;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --glass: blur(14px) saturate(135%);
+      --grad-bg: radial-gradient(1200px 600px at 10% -10%, rgba(124, 58, 237, 0.35), transparent 55%),
+                 radial-gradient(1000px 500px at 100% 0%, rgba(34, 211, 238, 0.35), transparent 50%),
+                 radial-gradient(900px 500px at 0% 100%, rgba(16, 185, 129, 0.25), transparent 55%),
+                 linear-gradient(180deg, var(--bg), var(--bg-2));
+    }
+    :root[data-theme='light'] {
+      --bg: #f6f7fb;
+      --bg-2: #eef1f9;
+      --surface: rgba(255, 255, 255, 0.75);
+      --surface-strong: rgba(255,255,255,0.92);
+      --text: #151725;
+      --muted: #5f6475;
+      --shadow: 0 10px 30px rgba(12, 28, 50, 0.15);
+      --glass: blur(10px) saturate(140%);
+      --grad-bg: radial-gradient(1200px 700px at 0% -10%, rgba(124, 58, 237, 0.18), transparent 50%),
+                 radial-gradient(900px 500px at 100% 0%, rgba(34, 211, 238, 0.18), transparent 50%),
+                 linear-gradient(180deg, var(--bg), var(--bg-2));
+    }
+
+    /* Navbar layout */
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; }
+
+    /* Theme switcher */
+    .theme-switcher select {
+      color: var(--text);
+      font-weight: 800;
+      min-height: 36px;
+      font-size: 13px;
+      padding: 6px 34px 6px 10px;
+      border-radius: 10px;
+      outline: none;
+      background-image:
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23e7e9ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>'),
+        linear-gradient(90deg, rgba(124,58,237,0.65) 0 8px, transparent 8px),
+        linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06));
+      background-color: rgba(17, 24, 39, 0.35);
+      border: 2px solid rgba(124,58,237,0.75);
+      box-shadow: 0 8px 24px rgba(124,58,237,0.25), inset 0 1px 0 rgba(255,255,255,0.06);
+      transition: box-shadow 140ms ease, transform 140ms ease, filter 140ms ease;
+      appearance: none;
+      -webkit-appearance: none;
+      background-repeat: no-repeat;
+      background-position: right 10px center, left top, left top;
+    }
+    .theme-switcher select:hover { transform: translateY(-3px); filter: brightness(1.05); }
+    .theme-switcher select:focus-visible { box-shadow: 0 0 0 4px rgba(34,211,238,0.35), inset 0 1px 0 rgba(255,255,255,0.06); }
+
+    .visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px); white-space: nowrap; }
+    
+    /* Text input box */
+    .text-input {
+      width: 100%;
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06));
+      background-color: rgba(17, 24, 39, 0.35);
+      border: 2px solid rgba(124,58,237,0.75);
+      border-radius: 10px;
+      padding: 10px 12px;
+      min-height: 120px;
+      resize: vertical;
+      box-shadow: 0 8px 24px rgba(124,58,237,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
+      font: inherit;
+    }
+    .text-input::placeholder { color: var(--muted); }
+    .text-input:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(34,211,238,0.35), inset 0 1px 0 rgba(255,255,255,0.06); }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo" aria-label="Questa home">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <circle cx="12" cy="12" r="8.5" fill="none" stroke="white" stroke-opacity="0.6" stroke-width="2"></circle>
+            <path d="M9 12.5l2 2L15.5 10" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </span>
+        <span class="logo-text">
+          <span class="logo-quiz">Ques</span><span class="logo-forge">ta</span>
+        </span>
+      </a>
+      <div class="theme-switcher">
+        <label for="themeSel" class="visually-hidden">Theme</label>
+        <select id="themeSel" aria-label="Theme">
+          <option value="auto">Auto</option>
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="sidebar">
+      <div class="block">
+        <h2>Upload PDF</h2>
+        <div class="uploader" id="dropZone">
+          <p>📄 Drag & Drop PDF</p>
+          <p class="small">or click to select</p>
+          <input type="file" id="fileInput" accept="application/pdf,.pdf">
+        </div>
+        <p id="fileStatus" class="status">No file chosen.</p>
+      </div>
+
+      <div class="block">
+        <h2>Write Text</h2>
+        <textarea id="textInput" class="text-input" placeholder="Type or paste content to generate the quiz..." rows="6"></textarea>
+        <p class="status">Tip: If you fill this, PDF upload is optional.</p>
+      </div>
+
+      <div class="block">
+        <h2>Question Settings</h2>
+        <label for="titleInput">Quiz Title</label>
+        <input type="text" id="titleInput" class="text-field" placeholder="Enter quiz title (optional)">
+        <label>MCQ: <span id="mcVal">5</span></label>
+        <input type="range" id="mcRange" min="0" max="20" value="5">
+        <label>True/False: <span id="tfVal">5</span></label>
+        <input type="range" id="tfRange" min="0" max="20" value="5">
+        <button id="generateBtn" class="btn">Generate Quiz</button>
+        <button id="exportBtn" class="btn outline" disabled>Export PDF</button>
+        <button id="submitBtn" class="btn" disabled>Submit Answers</button>
+      </div>
+    </section>
+
+    <section class="content">
+      <h2>Preview</h2>
+      <div id="quizOutput" class="quiz"></div>
+    </section>
+  </main>
+
+  <!-- libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- theme switcher runtime -->
+  <script>
+    (function(){
+      var sel = document.getElementById('themeSel');
+      function apply(mode){
+        var root = document.documentElement;
+        if (mode === 'light' || mode === 'dark') root.setAttribute('data-theme', mode);
+        else root.removeAttribute('data-theme');
+        try { localStorage.setItem('themeMode', mode); } catch(e){}
+      }
+      try {
+        var saved = localStorage.getItem('themeMode') || 'auto';
+        if (sel) sel.value = saved;
+      } catch(e){}
+      if (sel) {
+        sel.addEventListener('change', function(){ apply(sel.value); });
+      }
+    })();
+  </script>
+
+  <!-- app -->
+  <script src="script.js" defer></script>
+</body>
+</html>
